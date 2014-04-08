@@ -2,29 +2,21 @@ require "cuenote/api/base"
 
 module Cuenote::Api
   class Import < Base
-    def initialize(options={})
-      @options = options
-    end
-
-    def set
-      req = Request.new
-      req.add_command 'setImportEntry', 1, @options
-      res = connection.send req
+    def set params={}
+      res = run 'setImportEntry', 1, params
       @impid = res.attributes[:impid]
     end
 
-    def get
+    def get params={}
       @impid
     end
 
-    def test
+    def test params={}
       @impid
     end
 
-    def start
-      req = Request.new
-      req.add_command 'startImportEntry', 1, impid: @impid
-      res = connection.send req
+    def start params={}
+      run 'startImportEntry', 1, params.merge(impid: @impid)
     end
   end
 end

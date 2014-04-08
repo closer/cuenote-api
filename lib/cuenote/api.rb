@@ -1,12 +1,14 @@
 require "cuenote/api/version"
-require "cuenote/api/config"
-require "cuenote/api/xml_builder"
-require "cuenote/api/request"
-require "cuenote/api/response"
-require "cuenote/api/import"
 
-module Cuenote
-  module Api
-    # Your code goes here...
-  end
-end
+# Config
+require "cuenote/api/config"
+
+# Utility
+require "cuenote/api/command"
+require "cuenote/api/connection"
+require "cuenote/api/node"
+
+# Api Object
+require "cuenote/api/address_book"
+require "cuenote/api/address"
+require "cuenote/api/import"

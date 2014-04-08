@@ -10,7 +10,7 @@ module Cuenote::Api
 
     def method_missing name, value=nil
       if value
-        set name, value
+        set name.to_s.gsub(/=/, ''), value
       else
         get name
       end
