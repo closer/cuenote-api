@@ -2,8 +2,12 @@ require "cuenote/api/base"
 
 module Cuenote::Api
   class Import < Base
+    def initialize(params={})
+      @params = params
+    end
+
     def set params={}
-      res = run 'setImportEntry', 1, params
+      res = run 'setImportEntry', @params.merge(params)
       @impid = res.attributes[:impid]
     end
 
@@ -16,7 +20,7 @@ module Cuenote::Api
     end
 
     def start params={}
-      run 'startImportEntry', 1, params.merge(impid: @impid)
+      run 'startImportEntry', params.merge(impid: @impid)
     end
   end
 end

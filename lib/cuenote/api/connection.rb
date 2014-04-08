@@ -2,6 +2,7 @@ require "net/http"
 require "builder"
 
 require "cuenote/api/command"
+require "cuenote/api/result"
 
 module Cuenote::Api
   class Connection
@@ -12,16 +13,16 @@ module Cuenote::Api
     def send
       Net::HTTP.start uri.hostname, uri.port, use_ssl: (uri.scheme == 'https') do |http|
         http.request request
-      end
+      end.tap {|res| puts res.body }
     end
 
     def response
-      @response ||= Result.new(send)
+      @response ||= Result.new(send.body)
     end
 
     def request
       req = Net::HTTP::Post.new(uri)
-      req.basic_auth user, password
+      req.basic_auth username, password
       req.content_type = 'form-data'
       req.body = body.map{|k,v| "#{k}=#{v}" }.join("&")
       req
@@ -34,24 +35,24 @@ module Cuenote::Api
     def body
       {
         CCC: "愛",
-        xml: builder.build
+        xml: build
       }
     end
 
     def build
-      @builder.forcast do |forecast|
-        @commands.each_with_index do |command, id|
-          command.build id
+      builder.forcast do |forcast|
+        @commands.map.with_index do |command, id|
+          forcast << command.build(id)
         end
-      end
+      end.tap{|xml| puts xml }
     end
 
     def uri
       @uri ||= URI(config.endpoint)
     end
 
-    def user
-      config.user
+    def username
+      config.username
     end
 
     def password

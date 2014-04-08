@@ -1,17 +1,18 @@
-require "cuenote/api/base"
+require "cuenote/api/node"
 
 module Cuenote::Api
-  class AddressBook < Base
-    def initialize
-      @adbook = nil
+  class AddressBook < Node
+    def initialize(doc=nil)
+      super doc
+      @adbook = attributes[:adbook]
+      puts doc.class
     end
 
     def self.list
       res = run 'getAdBookList'
-      res.result.elements['adbookinfo'].map do |element|
-        Address.new(element)
+      res.elements.map do |element|
+        AddressBook.new(element)
       end
-      res.result.elements['adbookinfo']
     end
 
     # TODO
@@ -40,6 +41,10 @@ module Cuenote::Api
 
     # TODO
     def select
+    end
+
+    def import
+      @import ||= Import.new(adbook: @adbook)
     end
   end
 end

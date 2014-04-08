@@ -1,10 +1,19 @@
 require 'rexml/document'
 
+require "cuenote/api/base"
+
 module Cuenote::Api
-  class Node
-    def initialize(doc)
-      # doc.elements['forcast/result']
-      @doc = REXML::Document.new(doc)
+  class Node < Base
+    def initialize(doc=nil)
+      @doc =
+        case doc
+        when REXML::Element
+          doc
+        when String
+          REXML::Document.new(doc)
+        else
+          REXML::Document.new('<a/>')
+        end
     end
 
     def attributes
@@ -15,10 +24,7 @@ module Cuenote::Api
     end
 
     def elements
-      @params ||= @doc.elements.map.inject({}) do |hash, element|
-        hash[element.name.to_sym] = element.text
-        hash
-      end
+      @doc.elements
     end
   end
 end

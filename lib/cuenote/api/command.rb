@@ -3,8 +3,11 @@ require "builder"
 module Cuenote::Api
   class Command
     def initialize(command, params={})
-      @builder = ::Builder::XmlMarkup.new
       @command, @params = [command, params]
+    end
+
+    def builder
+      @builder ||= ::Builder::XmlMarkup.new
     end
 
     def build(id)
@@ -18,15 +21,15 @@ module Cuenote::Api
       options[:id] = id if id
       options[:command] = command
       if params && params.size > 0
-        @builder.execute options do |exec|
+        builder.execute options do |exec|
           exec.parameter do |parameter|
             params.each do |key, val|
-              eval "parameter.#{key} #{val}"
+              eval "parameter.#{key} \"#{val}\""
             end
           end
         end
       else
-        @builder.execute options
+        builder.execute options
       end
     end
   end

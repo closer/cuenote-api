@@ -1,6 +1,5 @@
 require "cuenote/api/command"
 require "cuenote/api/connection"
-require "cuenote/api/response"
 
 module Cuenote::Api
   class Base

@@ -14,7 +14,11 @@ describe "get address" do
 
   it "get address book" do
     books = Cuenote::Api::AddressBook.list
-    puts books
-    expect(books[0]).to be_a_kind_of Cuenote::Api::AddressBook
+    book = books[0]
+
+    expect(book).to be_a_kind_of Cuenote::Api::AddressBook
+
+    import = book.import
+    expect(import).to be_a_kind_of Cuenote::Api::Import
   end
 end

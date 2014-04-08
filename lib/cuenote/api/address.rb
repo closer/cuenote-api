@@ -4,7 +4,7 @@ module Cuenote::Api
   class Address
     def initialize(element=nil)
       @element = element
-      @adbook = element.attributes[:adbook]
+      # @adbook = element.attributes[:adbook]
     end
 
     # TODO
